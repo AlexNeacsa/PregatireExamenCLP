@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CLP 2025 — Pregătire Examen</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --bg2: #161b27;
+    --bg3: #1e2535;
+    --border: #2a3349;
+    --blue: #3b82f6;
+    --blue-light: #93c5fd;
+    --blue-dim: #1e3a5f;
+    --green: #22c55e;
+    --green-dim: #14532d;
+    --red: #ef4444;
+    --red-dim: #450a0a;
+    --amber: #f59e0b;
+    --amber-dim: #451a03;
+    --text: #e2e8f0;
+    --text2: #94a3b8;
+    --text3: #64748b;
+    --radius: 10px;
+    --radius-sm: 6px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  header {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo {
+    width: 36px; height: 36px;
+    background: var(--blue);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 15px; color: #fff; flex-shrink: 0;
+  }
+
+  header h1 { font-size: 17px; font-weight: 600; }
+  header p { font-size: 12px; color: var(--text2); margin-top: 1px; }
+
+  .container { max-width: 860px; margin: 0 auto; padding: 28px 20px; }
+
+  .tabs {
+    display: flex; gap: 4px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 4px;
+    margin-bottom: 28px;
+  }
+
+  .tab {
+    flex: 1; padding: 10px 16px;
+    border: none; background: transparent;
+    color: var(--text2); font-size: 14px;
+    cursor: pointer; border-radius: 7px;
+    transition: all 0.2s; font-weight: 500;
+  }
+  .tab:hover { color: var(--text); background: var(--bg3); }
+  .tab.active { background: var(--blue); color: #fff; }
+
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* REZUMAT */
+  .chapter {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 12px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .chapter:hover { border-color: #3a4560; }
+
+  .ch-head {
+    padding: 14px 18px;
+    cursor: pointer;
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 12px;
+    user-select: none;
+  }
+  .ch-head-left { display: flex; align-items: center; gap: 10px; }
+  .ch-num {
+    width: 26px; height: 26px; border-radius: 6px;
+    background: var(--blue-dim); color: var(--blue-light);
+    font-size: 12px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .ch-title { font-size: 14px; font-weight: 600; }
+  .ch-arrow {
+    color: var(--text3); font-size: 16px;
+    transition: transform 0.25s; flex-shrink: 0;
+  }
+  .chapter.open .ch-arrow { transform: rotate(180deg); }
+
+  .ch-body { display: none; padding: 0 18px 18px; }
+  .chapter.open .ch-body { display: block; }
+
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+  .tag {
+    background: var(--blue-dim); color: var(--blue-light);
+    font-size: 11px; padding: 3px 9px;
+    border-radius: 20px; font-weight: 500;
+  }
+
+  .item {
+    font-size: 13.5px; line-height: 1.65;
+    padding: 8px 12px;
+    border-left: 2px solid var(--border);
+    margin-bottom: 6px;
+    color: var(--text2);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    background: var(--bg3);
+  }
+  .item strong { color: var(--blue-light); font-weight: 600; }
+  .item em { color: var(--amber); font-style: normal; }
+
+  /* GRILE */
+  .stats-bar {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 10px; margin-bottom: 20px;
+  }
+  .stat {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 12px 16px;
+    text-align: center;
+  }
+  .stat-n { font-size: 24px; font-weight: 700; }
+  .stat-l { font-size: 11px; color: var(--text3); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.05em; }
+
+  .progress-bar {
+    height: 5px; background: var(--bg3);
+    border-radius: 3px; margin-bottom: 20px; overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%; background: linear-gradient(90deg, var(--blue), var(--green));
+    border-radius: 3px; transition: width 0.4s ease;
+  }
+
+  .btn-new {
+    padding: 9px 22px;
+    background: var(--bg2); border: 1px solid var(--border);
+    color: var(--text); border-radius: var(--radius-sm);
+    cursor: pointer; font-size: 13px; font-weight: 500;
+    margin-bottom: 24px; transition: all 0.2s;
+  }
+  .btn-new:hover { background: var(--bg3); border-color: var(--blue); color: var(--blue-light); }
+
+  .q-card {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 18px;
+    margin-bottom: 14px; transition: border-color 0.2s;
+  }
+
+  .q-num {
+    font-size: 11px; color: var(--text3);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    margin-bottom: 8px; font-weight: 600;
+  }
+
+  .q-text {
+    font-size: 14.5px; font-weight: 600;
+    margin-bottom: 14px; line-height: 1.55;
+    color: var(--text);
+  }
+
+  .opt {
+    display: block; width: 100%;
+    text-align: left; padding: 10px 14px;
+    margin-bottom: 7px;
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text2); font-size: 13.5px;
+    cursor: pointer; transition: all 0.15s;
+    line-height: 1.5;
+  }
+  .opt:hover:not(:disabled) { border-color: var(--blue); color: var(--text); background: var(--blue-dim); }
+  .opt:disabled { cursor: default; }
+
+  .opt.correct {
+    background: var(--green-dim); border-color: var(--green);
+    color: #86efac; font-weight: 500;
+  }
+  .opt.wrong {
+    background: var(--red-dim); border-color: var(--red);
+    color: #fca5a5;
+  }
+  .opt.show-correct {
+    background: var(--green-dim); border-color: var(--green);
+    color: #86efac;
+  }
+
+  .exp {
+    display: none; margin-top: 12px;
+    padding: 12px 14px;
+    background: var(--bg3); border-left: 3px solid var(--blue);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    font-size: 13px; color: var(--text2); line-height: 1.6;
+  }
+  .exp.show { display: block; }
+  .exp::before {
+    content: '💡 '; font-size: 13px;
+  }
+
+  .q-card.answered-correct { border-color: #166534; }
+  .q-card.answered-wrong { border-color: #7f1d1d; }
+
+  footer {
+    text-align: center; padding: 32px 20px;
+    color: var(--text3); font-size: 12px;
+    border-top: 1px solid var(--border);
+    margin-top: 40px;
+  }
+
+  @media (max-width: 600px) {
+    .stats-bar { grid-template-columns: repeat(2, 1fr); }
+    .ch-title { font-size: 13px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">CLP</div>
+  <div>
+    <h1>Circuite Logice Programabile — 2025</h1>
+    <p>Rezumat &amp; Grile de pregătire pentru examen</p>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('rezumat', this)">📚 Rezumat pentru examen</button>
+    <button class="tab" onclick="switchTab('grile', this)">✏️ Grile practice</button>
+  </div>
+
+  <!-- REZUMAT -->
+  <div id="rezumat" class="section active">
+    <div id="chapters"></div>
+  </div>
+
+  <!-- GRILE -->
+  <div id="grile" class="section">
+    <div class="stats-bar">
+      <div class="stat">
+        <div class="stat-n" id="s-total">0</div>
+        <div class="stat-l">Întrebări</div>
+      </div>
+      <div class="stat">
+        <div class="stat-n" id="s-correct" style="color:var(--green)">0</div>
+        <div class="stat-l">Corecte</div>
+      </div>
+      <div class="stat">
+        <div class="stat-n" id="s-wrong" style="color:var(--red)">0</div>
+        <div class="stat-l">Greșite</div>
+      </div>
+      <div class="stat">
+        <div class="stat-n" id="s-pct" style="color:var(--amber)">—</div>
+        <div class="stat-l">Scor</div>
+      </div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="prog" style="width:0%"></div></div>
+    <button class="btn-new" onclick="loadQuiz()">↻ Grile noi (10 aleatorii)</button>
+    <div id="quiz-container"></div>
+  </div>
+
+</div>
+
+<footer>CLP 2025 · Aplicație offline pentru pregătirea examenului · Deschide în orice browser</footer>
+
+<script>
+const chapters = [
+  {
+    title: "Cap.1 — Fundamentele CLP",
+    tags: ["FPGA","SPLD","CPLD","Memorii","Tehnologii"],
+    items: [
+      "<strong>Cele 3 categorii</strong> de circuite digitale: cu funcție fixă, dedicate (ASIC) și programabile (PLD/FPGA).",
+      "<strong>Avantajele PLD</strong>: viteză superioară față de circuite fixe, dimensiuni mici, timpi de proiectare scurți, rată mică de defectare, dificil de copiat, actualizabil prin reprogramare.",
+      "<strong>Tehnologia fuzibilă</strong> = OTP (One Time Programmable); fuzibilele se distrug la programare (ireversibil); FPGA actuale <em>NU</em> folosesc fuzibile.",
+      "<strong>Tehnologia antifuzibilă</strong>: în stare neprogramată = rezistență mare (>10⁹ Ω); programarea creează o cale conductivă prin siliciu amorf → polisilicu conductiv. Tot OTP.",
+      "<strong>ROM</strong> = nonvolatil, mask-programmable (datele blocate la fabricație). <strong>RAM</strong> = volatil, citire+scriere.",
+      "<strong>EPROM</strong>: floating gate; programare cu ~12V; ștergere cu UV (~20 min) prin fereastră de quartz. Dispozitivele = EPLD.",
+      "<strong>E²PROM</strong>: celulă de 2,5× mai mare decât EPROM; ștergere electrică per celulă; folosit în EEPLD.",
+      "<strong>FLASH</strong>: evoluție din EPROM+E²PROM; ștergere rapidă; poate stoca 2 biți/celulă (două niveluri de încărcare).",
+      "<strong>DRAM</strong>: 1 tranzistor + condensator; necesită refresh periodic; <em>NU</em> e folosit în FPGA.",
+      "<strong>SRAM</strong>: 6 tranzistori (6T); static (NU necesită refresh); volatil; reprogramare nelimitată; <em>cel mai folosit în FPGA</em>.",
+      "<strong>Rezumat tehnologii ↔ dispozitive</strong>: Fuzibil→SPLD | Antifuzibil→FPGA | EPROM→SPLD/CPLD | E²PROM/FLASH→SPLD/CPLD/unele FPGA | SRAM→FPGA/unele CPLD.",
+      "<strong>MRAM</strong>: tehnologie nouă bazată pe junction magnetic; combină viteza SRAM + capacitatea DRAM + nonvolatilitatea FLASH."
+    ]
+  },
+  {
+    title: "Cap.2 — Evoluția CLP (SPLD, CPLD, ASIC, FPGA)",
+    tags: ["SPLD","CPLD","PROM","PLA","PAL","ASIC","Istoric"],
+    items: [
+      "<strong>Tranzistorul</strong>: 1947 (Bardeen & Brattain, Bell Labs); Nobel 1956. <strong>Primul CI</strong>: ~1960 (Jack Kilby, Texas Instruments; Nobel 2000). <strong>SRAM</strong> bipolară: 1963.",
+      "<strong>Cronologie CLP</strong>: SPLD ~1970 | CPLD ~1980 | Altera EP300 (1984, EPROM+UV) | Xilinx XC2064 (1985 — primul FPGA cu SRAM și interconectare programabilă).",
+      "<strong>PROM ca PLD</strong>: nivel AND <em>fix</em> + nivel OR <em>programabil</em>; implementează sume de produse; bun pentru funcții cu mulți termeni dar puține intrări.",
+      "<strong>PLA</strong> (1975): ambele niveluri (AND + OR) programabile → flexibilitate maximă dar mai lent decât PROM (două niveluri de întârziere programabile).",
+      "<strong>PAL</strong>: nivel AND <em>programabil</em> + nivel OR <em>fix</em> → mai rapid decât PLA; dezavantaj = număr limitat de termeni sumă.",
+      "<strong>CPLD</strong>: blocuri SPLD (de obicei PAL) + matrice comună de interconectare; Altera a creat primul CPLD CMOS+EPROM în 1984.",
+      "<strong>ASIC Full Custom</strong>: control total al fiecărui tranzistor (dimensiuni, poziție); cel mai performant și mai costisitor.",
+      "<strong>ASIC Gate Array</strong>: celule de bază prefabricate; doar straturile de metalizare se personalizează; cost redus dar utilizare slabă a resurselor.",
+      "<strong>ASIC Standard Cell</strong>: biblioteci de celule standard; NU există celule prefabricate; implementare optimă; apărut în anii '80.",
+      "<strong>Structured ASIC</strong>: celule master prefabricate + configurare prin 2-3 straturi de metalizare; reduce timpul și costul față de Standard Cell dar consumă 3× mai multă putere."
+    ]
+  },
+  {
+    title: "Cap.3 — FPGA: arhitecturi și tehnologii de implementare",
+    tags: ["SRAM","Antifuzibil","FLASH","LUT","Securitate","Noduri"],
+    items: [
+      "<strong>FPGA vs ASIC/CPLD</strong>: FPGA a umplut golul — programabilitate mare + funcții complexe + performanțe mai bune decât CPLD, dar mai slabe decât ASIC.",
+      "<strong>LUT</strong> (Lookup Table): memorie SRAM mică ce stochează valorile funcției; adresa = intrările funcției. LUT cu n intrări = 2ⁿ celule SRAM.",
+      "<strong>FPGA SRAM</strong>: avantaje = reprogramabil nelimitat, același proces CMOS, utilizabil la prototipare; dezavantaje = volatil (necesită memorie externă la fiecare pornire), risc de securitate.",
+      "<strong>Securitate FPGA-SRAM</strong>: bitstream encryption (ex. AES la Xilinx Seria 7); cheia stocată în registru SRAM alimentat de baterie externă.",
+      "<strong>FPGA antifuzibil</strong>: nonvolatil, NU necesită memorie externă, imun la radiații electromagnetice (util în aplicații militare/aerospațiale), IP protejat; dezavantaj = OTP.",
+      "<strong>FPGA EEPROM/FLASH</strong>: nonvolatil; celulă mai mică decât SRAM; programare in-system posibilă dar de ~3× mai lentă decât SRAM; protecție prin chei de protecție JTAG.",
+      "<strong>Noduri tehnologice</strong>: de la 3μm (ani '80) → câțiva nm azi. Sub 0,5μm = Deep SubMicron (DSM); sub aceasta = Ultra-DSM (UDSM). Denumire în nm (ex. 0,09μm = 90nm).",
+      "<strong>Sumar comparativ FPGA</strong>: SRAM = ultimele noduri, reprogramabil rapid, volatil, securitate acceptabilă (cu criptare) | Antifuzibil = generații în urmă, OTP, nereprogramabil, securitate excelentă | EEPROM/FLASH = generații în urmă, reprogramabil offline, nonvolatil.",
+      "<strong>Platforme FPGA</strong>: pe lângă blocuri logice și matricea de interconectare conțin: embedded RAM, nuclee de microprocesor, High Speed I/Os, DSP slices, Gigabit Transceivers."
+    ]
+  },
+  {
+    title: "Cap.4 — Caracteristici FPGA: blocuri logice, I/O, ceas",
+    tags: ["CLB","LUT","DSP","I/O","PLL","DLL","LVDS","Carry chains"],
+    items: [
+      "<strong>Granularitate</strong>: fine-grained (blocuri mici, paralelism mare), medium-grained (LUT-uri, cel mai răspândit), coarse-grained (blocuri mari cu multiplicatoare etc.).",
+      "<strong>LUT vs MUX</strong>: LUT-urile nu permit accesul la valori intermediare ale funcției; MUX-urile da. FPGA moderne folosesc preponderent LUT-uri cu fast carry chains.",
+      "<strong>Xilinx CLB (Seria 7)</strong>: 2 Slice-uri/CLB; fiecare Slice = 4 LUT-uri cu 6 intrări + 8 registre. Total CLB: 8 LUT-uri + 16 registre.",
+      "<strong>Un LUT cu 6 intrări și 2 ieșiri</strong> poate implementa: 1 funcție de 6 variabile SAU 2 funcții de 5 variabile (cu variabile comune) SAU 2 funcții independente de 2-3 variabile.",
+      "<strong>Altera LAB</strong>: conține LE (Logic Elements). FLEX8000: 8 LE/LAB | Cyclone II: 16 LE/LAB. Fiecare LE = LUT cu 4 intrări + registru + logică adițională.",
+      "<strong>Distributed RAM</strong>: LUT-urile SRAM pot fi folosite ca memorie RAM distribuită. <strong>Shift Register</strong>: celulele SRAM înlănțuite pot forma registre de deplasare.",
+      "<strong>Carry chains</strong>: lanțuri rapide de transport al depășirii pentru operații aritmetice; ocolesc matricea de interconectare pentru viteză maximă.",
+      "<strong>DSP Slice (Xilinx Spartan 6 — DSP48A1)</strong>: multiplicator 18×18b pipelinat + acumulator 48b + pre-adder; viteză până la 500MHz la unele familii.",
+      "<strong>Nuclee de microprocesor</strong>: hard macro (implementat fix în siliciu) SAU soft core (cod RTL sintetizabil, replicabil, plasabil oriunde) SAU firm core (intermediar).",
+      "<strong>Clock manager Xilinx</strong>: DCM (vechile serii) sau MMCM (Seria 7); generează frecvențe multiple, elimină jitter, creează semnale defazate (90/180/270°).",
+      "<strong>PLL vs DLL</strong>: PLL = analogic, sinteză frecvență, filtrare jitter | DLL = digital, ajustare întârzieri, mai stabilă, consum mai mic.",
+      "<strong>LVDS</strong>: curent constant 3,5mA pe linie; tensiune diferențială ±350mV; rezistență de terminare ~100Ω; imun la zgomot de mod comun; putere scăzută.",
+      "<strong>DCI (Digitally Controlled Impedance)</strong>: controlează impedanța pinilor I/O cu referințe VRN/VRP; ajustare în funcționare pentru variații de temperatură/tensiune.",
+      "<strong>Gigabit Transceivers</strong>: transmisie diferențială serială; Xilinx Seria 7: până la 28,05 Gb/s per canal."
+    ]
+  },
+  {
+    title: "Cap.5 — Configurarea FPGA și interfața JTAG",
+    tags: ["Bitstream","JTAG","Serial","Paralel","Boundary Scan","TAP"],
+    items: [
+      "<strong>Bitstream</strong>: fișier binar de configurare; fiecare bit definește starea unei celule SRAM din FPGA (funcție logică, MUX, conexiune în matricea de interconectare).",
+      "<strong>Configurare SRAM</strong>: celulele de configurare sunt înlănțuite în frame-uri; frame-urile de bistabile D se încarcă serial, apoi se copiază paralel în celulele SRAM.",
+      "<strong>Moduri de configurare</strong>: Serial Master | Serial Slave | Paralel Master | Paralel Slave | JTAG. Selectate prin pinii Mod_pin.",
+      "<strong>Daisy Chain</strong>: înlănțuire de mai multe FPGA-uri pentru configurare; TDO al unui FPGA → TDI al următorului; un singur bitstream configureaza toate.",
+      "<strong>JTAG (IEEE 1149.1)</strong>: pini = TDI (data intrare), TDO (data ieșire), TCK (ceas), TMS (control mod) + opțional TRST (reset).",
+      "<strong>TAP Controller</strong>: FSM cu intrări TCK și TMS; controlează selecția registrelor de date (Boundary Scan Register, Bypass, Identification Register, lanț configurare).",
+      "<strong>Celula Boundary Scan — 4 moduri</strong>: Normal (trecere directă intrare→ieșire) | Capture (citește din circuit) | Shift (deplasează în lanț) | Update (scrie în circuit).",
+      "<strong>Instrucțiuni obligatorii JTAG</strong>: EXTEST (test interconexiuni externe), BYPASS (scurtcircuitarea unui chip), SAMPLE (capturare date interne), PRELOAD.",
+      "<strong>Fluxul de pornire Xilinx Seria 7</strong>: Set-up (ștergere SRAM + analiza pinilor mod) → Bitstream Loading (sincronizare + verificare ID + încărcare + verificare CRC) → Finish.",
+      "<strong>Bitstream criptat</strong>: Xilinx Seria 7 suportă AES; cheia stocată în registru SRAM alimentat de baterie externă; Read Back blocat după decriptare."
+    ]
+  },
+  {
+    title: "Cap.6-7 — CMOS, Timpi de propagare, Hazard, Sincronicitate",
+    tags: ["CMOS","Fan-in","Fan-out","Glitch","Hazard","Set-up","Hold","Metastabilitate"],
+    items: [
+      "<strong>CMOS</strong>: PMOS conduce când Gate=0 (joasă); NMOS conduce când Gate=1 (înaltă). Complementaritate → implementare eficientă a porților logice.",
+      "<strong>Număr de tranzistori</strong>: Inversor=2 | NAND2/NOR2=4 | AND2/OR2=6. De aceea NAND/NOR sunt preferate — orice funcție se poate scrie cu NAND sau cu NOR.",
+      "<strong>Fan-in</strong>: capacitatea unui pin de intrare. <strong>Fan-out</strong>: capacitatea maximă controlată de o ieșire. Întotdeauna fan-out >> fan-in.",
+      "<strong>Puterea de conducție (drive strength)</strong>: curentul furnizat la ieșire; mai mare → timp de propagare mai mic → tranzistori mai mari (lățime W mai mare).",
+      "<strong>Glitch</strong>: puls nedorit de scurtă durată cauzat de căi cu întârzieri diferite (concurența semnalelor).",
+      "<strong>Hazard static 1</strong>: ieșirea trebuie să rămână 1, trece temporar în 0. Apare când există A & !A în ecuație. Eliminare: termen de consens suplimentar în Karnaugh.",
+      "<strong>Hazard static 0</strong>: ieșirea trebuie să rămână 0, trece temporar în 1. Apare când există A | !A.",
+      "<strong>Inertial delay</strong>: un glitch mai scurt decât timpul de propagare al porții NU se propagă la ieșire — util în simulare.",
+      "<strong>Bistabil D — parametri temporali</strong>: t_su (set-up: date stabile înaintea frontului) | t_hold (date stabile după front) | t_prop (clock-to-output delay).",
+      "<strong>Metastabilitate</strong>: apare când datele NU respectă t_su/t_hold; ieșirea e impredictibilă; se stabilizează eventual la 0 sau 1 (aleator). Probabilitate exprimată prin MTBF.",
+      "<strong>MTBF</strong>: scade exponențial cu creșterea frecvenței datelor de intrare; scade cu creșterea timpului de recuperare.",
+      "<strong>Sincronizatoare</strong>: 2 bistabile D pe ceasul destinație pentru date din alt domeniu de ceas sau asincrone; reduc (nu elimină) metastabilitatea.",
+      "<strong>Clock skew</strong>: defazaj al ceasului față de sursa de referință. Pozitiv → risc t_setup | Negativ → risc t_hold (mai periculos, nu se poate rezolva prin reducerea frecvenței).",
+      "<strong>Clock jitter</strong>: instabilitate temporală a fronturilor de ceas; surse: generatoare de ceas, buffere, temperatură, zgomot în alimentare.",
+      "<strong>Puterea dinamică</strong>: P = α · f · C · Vdd² | α = factorul de activitate (1 pt ceas, ~0,5 pt porți logice).",
+      "<strong>Puterea statică</strong>: curenți sub-threshold prin tranzistori chiar și când nu comută; >40% din puterea totală la tehnologiile actuale sub 28nm."
+    ]
+  },
+  {
+    title: "Cap.8-9 — Ceas, Reset, Recomandări practice de proiectare",
+    tags: ["Clock gating","CDC","FIFO","Reset","Domenii de ceas","Handshake"],
+    items: [
+      "<strong>Clock gating</strong>: dezactivarea ceasului în zonele inactive; reduce puterea dinamică. Se folosesc buffere specializate, <em>NU</em> porți AND simple (care produc glitch-uri pe ceas).",
+      "<strong>CDC (Clock Domain Crossing)</strong>: tehnici pentru trecerea sigură între domenii de ceas: lărgirea pulsurilor + sincronizatoare (2 bistabile) + handshake + FIFO asincron.",
+      "<strong>Handshake CDC</strong>: transmițătorul setează data (D) și activează Request (Req); receptorul eșantionează data și activează Acknowledge (Ack); transmițătorul dezactivează Req.",
+      "<strong>FIFO asincron</strong>: interfață de scriere pe ceasul domeniului A, interfață de citire pe ceasul domeniului B; semnale de control FULL și EMPTY.",
+      "<strong>Reset sincron</strong> recomandat față de Reset asincron (cel asincron poate cauza metastabilitate dacă nu este sincronizat cu ceasul).",
+      "<strong>Reguli practice — NU face</strong>: NU trece ceasul prin porți logice | NU folosi ambele fronturi de ceas | NU folosi ieșirea bistabilului pentru a reseta alt bistabil | NU crea pulsuri cu logică combinațională | NU inserați buffere nebalansate în arborele de ceas."
+    ]
+  },
+  {
+    title: "Cap.10-11 — Flux de proiectare, Limbaje HDL, Verificare funcțională",
+    tags: ["HDL","VHDL","Verilog","SystemVerilog","STA","Testbench","FV","Coverage"],
+    items: [
+      "<strong>Fluxul ASIC (Front-End)</strong>: Design Entry → Sinteză logică → Partitionare → Floorplan. <strong>Back-End</strong>: Plasare → CTS → Rutare → Extragere RC → Simulare post-layout.",
+      "<strong>Fluxul FPGA</strong>: Design Entry → Sinteză logică → Implementare (Mapare+Plasare+Rutare) → Generare bitstream. Rezultat = bitstream, NU masti foto.",
+      "<strong>EDIF</strong>: format standard (non-proprietar) de netlist pentru transferul între unelte EDA.",
+      "<strong>Verilog</strong>: creat ~1985 (Cadence); standard IEEE-1364 (1995); PLI/VPI pentru interfațare cu C/C++; SDF pentru timing post-implementare.",
+      "<strong>VHDL</strong>: standard IEEE-1076 (1987); mai rigid dar mai flexibil la tipuri de date; preferat în Europa; VITAL = biblioteci pentru timing în simulare.",
+      "<strong>SystemVerilog</strong>: super-set al Verilog + OOP + constructii de verificare complexe (randomizare, coverage, aserțiuni SVA).",
+      "<strong>SystemC</strong>: extensie C++ pentru modelare HW; moduri AT (aproape RTL), LT (platforme virtuale, simulare rapidă), UT (fără timp). Standardul Accellera.",
+      "<strong>HLS (High Level Synthesis)</strong>: sinteză din C/C++/SystemC; AMD Vitis HLS | bun pentru data path, mai dificil pentru control path.",
+      "<strong>Verificare funcțională</strong>: >50% din timpul de proiectare; DUT inglobat în Testbench (generatoare + monitoare + model de referință + acoperire funcțională).",
+      "<strong>Constraint-random</strong>: stimuli pseudoaleatori cu constrângeri; acoperire mult mai mare decât testele directe.",
+      "<strong>Coverage-driven</strong>: verificare continuată până când toate elementele de interes (code coverage + functional coverage) sunt acoperite.",
+      "<strong>Verificare Formală (FV)</strong>: metodă matematică (BDD, SAT); explorează tot spațiul stărilor; 100% coverage posibil; limbaje PSL și SVA. Rezultate: proven/fired/inconclusive.",
+      "<strong>Equivalence Checking</strong>: variantă FV; compară matematic RTL cu netlist-ul post-sinteză pentru a verifica că sinteza nu a introdus erori.",
+      "<strong>MTBF în sisteme de bug-tracking</strong>: tichetul trece prin stări: deschis → asignat → reparat/invalid → verificat → închis. Doar inițiatorul poate închide un tichet."
+    ]
+  },
+  {
+    title: "Cap.12-13 — Implementare fizică, Optimizare, Depanare FPGA",
+    tags: ["STA","Timing","Pipelining","Retiming","Constrângeri","ChipScope","Debug"],
+    items: [
+      "<strong>Constrângeri XDC (Xilinx Vivado)</strong>: de timp (SDC-compatibil) + de implementare fizică; fișiere .xdc cu sintaxă Tcl.",
+      "<strong>STA — termeni cheie</strong>: required time (max permis) | arrival time (timp real) | slack = required − arrival. Slack negativ = violarea constrângerii de timing.",
+      "<strong>Max delay analysis</strong>: verifică respectarea t_setup și recovery time (Reset). <strong>Min delay analysis</strong>: verifică t_hold și removal time.",
+      "<strong>Multicycle paths</strong>: cale care poate consuma >1 ciclu de ceas; se declară explicit pentru a relaxa constrângerile de setup.",
+      "<strong>False paths</strong>: căi statice sau nefuncționale; excluse complet din analiza de timing.",
+      "<strong>Pipelining</strong>: inserarea de niveluri de registre (bistabile D sau Registri) între blocuri combinaționale lungi → crește frecvența maximă de funcționare.",
+      "<strong>Retiming</strong>: redistribuirea registrelor de pipeline (mutare înainte/înapoi față de logica combinațională) de către sintetizator; fără modificarea funcționalității.",
+      "<strong>Replicarea registrelor</strong>: pentru 'sarme lungi' cu fan-out mare; multiplică elementele secvențiale și le plasează mai aproape de destinatari.",
+      "<strong>Latch-uri în FPGA</strong>: introduse de sintetizator la if-then-else incomplete sau case fără default/when others; de <em>EVITAT</em> în proiectarea FPGA.",
+      "<strong>Observarea nodurilor interne</strong>: prin scoatere la pini (limitată), multiplexare MUX (flexibilă dar necesită re-implementare), sau analizor logic intern (ChipScope).",
+      "<strong>ChipScope Pro (AMD-Xilinx)</strong>: analizor logic intern; capturează noduri interne în RAM intern; citit prin JTAG; declanșat de condiții de trigger programabile.",
+      "<strong>Estimarea puterii în FPGA</strong>: Xilinx Power Estimator (XPE) înainte de implementare; Vivado Power Analyzer după implementare folosind fișiere SAIF/VCD din simulare."
+    ]
+  }
+];
+
+const allQuestions = [
+  {
+    q: "Care este principala diferență între FPGA bazat pe SRAM și cel bazat pe antifuzibil?",
+    opts: [
+      "SRAM este OTP, iar cel cu antifuzibil este reprogramabil în sistem",
+      "SRAM este volatil și reconfigurabil, iar antifuzibilul este nonvolatil și OTP",
+      "SRAM folosește o celulă cu 2 tranzistori, iar antifuzibilul are 6 tranzistori",
+      "Antifuzibilul se bazează pe cipuri Flash externe pentru încărcarea datelor"
+    ],
+    ans: 1,
+    exp: "FPGA cu SRAM: volatil (pierde configurația la oprire) dar reprogramabil nelimitat. FPGA cu antifuzibil: nonvolatil (păstrează configurația) dar OTP — nu poate fi reprogramat, legăturile electrice fiind create permanent în siliciul amorf."
+  },
+  {
+    q: "Câți tranzistori are o poartă NAND cu 2 intrări în tehnologie CMOS?",
+    opts: [
+      "Are în total 2 tranzistori cascadați",
+      "Are în total 4 tranzistori (2 PMOS și 2 NMOS)",
+      "Are în total 6 tranzistori structurali",
+      "Are în total 8 tranzistori complecși"
+    ],
+    ans: 1,
+    exp: "NAND2 = 4 tranzistori (2 NMOS în serie + 2 PMOS în paralel). AND2/OR2 = 6 tranzistori (deoarece adaugă un inversor de 2 tranzistori la ieșire). De aceea, porțile NAND/NOR sunt preferate în biblioteci."
+  },
+  {
+    q: "Ce reprezintă 'fan-out' în contextul circuitelor digitale?",
+    opts: [
+      "Numărul total de pini de intrare ai unei porți logice discrete",
+      "Capacitatea maximă de încărcare pe care o ieșire o poate controla",
+      "Numărul de registre dintr-un singur Slice sau bloc logic CLB",
+      "Frecvența maximă la care poate comuta un nod de interconectare"
+    ],
+    ans: 1,
+    exp: "Fan-out = capacitatea maximă pe care un pin de ieșire o poate controla (cât curent poate furniza pentru a încărca capacitățile din aval). Fan-in caracterizează pinii de intrare."
+  },
+  {
+    q: "Tehnologia de memorie EPROM se șterge prin:",
+    opts: [
+      "Aplicarea unor impulsuri electrice de tensiune foarte înaltă",
+      "Expunerea la radiație ultravioletă (UV) prin fereastra de quartz",
+      "Ștergere electrică rapidă realizată celulă cu celulă",
+      "Expunerea directă a chip-ului la un câmp magnetic controlat"
+    ],
+    ans: 1,
+    exp: "EPROM se șterge cu radiație UV (~20 min) prin fereastra de cuarț a capsulei. Dezavantaje: timp lung de ștergere offline și ferestre scumpe. EEPROM și Flash se șterg electric."
+  },
+  {
+    q: "Ce înseamnă termenul 'slack' în analiza statică de timing (STA)?",
+    opts: [
+      "Procentul de celule logice și LUT-uri rămase neutilizate pe cip",
+      "Diferența matematică dintre required time și arrival time",
+      "Întârzierea parazită introdusă de bufferele din arborele de ceas",
+      "Factorul mediu de activitate electrică al unui semnal periodic"
+    ],
+    ans: 1,
+    exp: "Slack = required time − arrival time. Slack pozitiv = timing OK (datele ajung la timp). Slack negativ = violarea constrângerilor (datele ajung prea târziu, generând probleme de set-up)."
+  },
+  {
+    q: "Care celulă de memorie este utilizată la scară largă în FPGA-urile actuale?",
+    opts: [
+      "Celule de tip 4T SRAM fără tranzistori de acces",
+      "Celule de tip 6T SRAM (6 tranzistori MOSFET)",
+      "Celule de tip DRAM ce necesită cicluri de refresh",
+      "Celule de tip MRAM bazate na tehnologii magnetice"
+    ],
+    ans: 1,
+    exp: "Celulele 6T SRAM (6 tranzistori MOSFET) configurate ca Latch cu tranzistori de acces sunt standard în FPGA-urile actuale datorită vitezei și integrării CMOS native."
+  },
+  {
+    q: "Hazardul static 1 apare atunci când:",
+    opts: [
+      "Ieșirea ar trebui să fie constant 1, dar scade tranzitoriu în 0",
+      "Ieșirea ar trebui să fie constant 0, dar crește tranzitoriu în 1",
+      "Ieșirea efectuează trei sau mai multe comutații consecutive",
+      "Două sau mai multe intrări ale unei porți se modifică simultan"
+    ],
+    ans: 0,
+    exp: "Hazard static 1: ieșirea ar trebui să fie constant 1, dar din cauza întârzierilor diferite pe căile logice cu A și !A, apare temporar un puls în 0. Se elimină prin adăugarea de termeni implicați redundanți."
+  },
+  {
+    q: "Metastabilitatea în circuitele digitale apare când:",
+    opts: [
+      "Semnalul de ceas depășește frecvența maximă a tehnologiei",
+      "Semnalul de date încalcă timpii de set-up și hold ai bistabilului",
+      "Circuitul conține prea multe niveluri de logică combinațională adâncă",
+      "Bistabilul nu are conectată o linie de Reset sincron sau asincron"
+    ],
+    ans: 1,
+    exp: "Metastabilitatea apare când datele de intrare se modifică în fereastra (t_su + t_hold) a bistabilului D. Ieșirea devine impredictibilă și se stabilizează aleatoriu după un timp de rezoluție."
+  },
+  {
+    q: "Ce este 'clock skew negativ' și de ce este considerat periculos?",
+    opts: [
+      "Ceasul ajunge la destinație mai târziu decât la sursă, afectând set-up-ul",
+      "Ceasul ajunge la destinație mai devreme decât la sursă, riscând hold-ul",
+      "Frecvența ceasului global scade sub limita minimă din catalog",
+      "Semnalul de ceas este blocat complet de o poartă AND din LUT-uri"
+    ],
+    ans: 1,
+    exp: "Clock skew negativ: receptorul primește ceasul înaintea emițătorului. Datele pot trece prin ambele registre în același ciclu de ceas, încălcând timpul de hold. Nu se poate repara prin reducerea frecvenței ceasului extern."
+  },
+  {
+    q: "Tehnica 'pipelining' se folosește în proiectare pentru:",
+    opts: [
+      "Minimizarea consumului de putere statică generat de curenții de scurgere",
+      "Mărirea frecvenței de lucru prin inserarea registrelor în căile logice",
+      "Reducerea numărului total de LUT-uri și DSP-uri utilizate pe cip",
+      "Criptarea fișierului binar bitstream pentru a proteja proprietatea intelectuală"
+    ],
+    ans: 1,
+    exp: "Pipelining = inserarea de registre (bistabile D) în lanțurile combinaționale lungi. Sparge calea critică în segmente mai scurte, crescând Fmax și debitul, dar mărind latența totală."
+  },
+  {
+    q: "Instrucțiunea JTAG obligatorie EXTEST este folosită pentru:",
+    opts: [
+      "Testarea detaliată a blocului logic intern din interiorul FPGA-ului",
+      "Testarea interconexiunilor și lipiturilor fizice dintre chip-uri pe PCB",
+      "Săparea peste un chip inactiv aflat în lanțul general de scanare",
+      "Citirea în timp real a stărilor interne din registre fără oprirea cipului"
+    ],
+    ans: 1,
+    exp: "EXTEST (External Test): folosește lanțul Boundary Scan pentru testarea conexiunilor fizice de pe placa de circuit imprimat (PCB). BYPASS este folosită pentru a trece peste un cip."
+  },
+  {
+    q: "Ce este un 'soft core microprocessor' în contextul FPGA?",
+    opts: [
+      "Un nucleu de procesor implementat fix în siliciu ca hard macro",
+      "Un procesor descris în cod HDL și implementat în logica generică",
+      "Un cip de microcontroler extern plasat fizic pe aceeași placă PCB",
+      "Un procesor analogic dedicat optimizării consumului electric"
+    ],
+    ans: 1,
+    exp: "Soft core = procesor descris în cod RTL sintetizabil (ex: MicroBlaze, Nios). Este flexibil și configurabil, dar consumă LUT-uri și registre și este mai lent decât un hardware fix (hard core ca ARM)."
+  },
+  {
+    q: "Care este avantajul principal al FPGA cu antifuzibil față de cel cu SRAM în aplicații aerospațiale?",
+    opts: [
+      "Are un cost de producție mult mai scăzut pentru volume mari",
+      "Este imun la erorile SEU induse de radiații și protejează mai bine IP-ul",
+      "Utilizează cele mai avansate noduri tehnologice sub-micronice existente",
+      "Permite reconfigurarea dinamică parțială a blocurilor în timp real"
+    ],
+    ans: 1,
+    exp: "Tehnologia antifuzibil este nonvolatilă și imună la Single Event Upsets (SEU) provocate de radiațiile cosmice (celulele SRAM își pot schimba starea). De asemenea, configurația fizică nu poate fi extrasă extern."
+  },
+  {
+    q: "În ce constă tehnica 'clock gating'?",
+    opts: [
+      "Înlocuirea completă a buclelor interne PLL cu oscilatoare externe",
+      "Oprirea ceasului în modulele inactive pentru a reduce puterea dinamică",
+      "Dublarea frecvenței de ceas în zonele cu procesare aritmetică intensă",
+      "Filtrarea componentelor de jitter din semnalul de ceas de la pini"
+    ],
+    ans: 1,
+    exp: "Clock gating: dezactivarea ceasului în zonele logice temporar inactive folosind un semnal Enable, reducând puterea dinamică. În FPGA se folosesc module dedicate (BUFGCE), nu porți logice AND simple."
+  },
+  {
+    q: "Ce este 'distributed RAM' în contextul unui FPGA Xilinx?",
+    opts: [
+      "Un bloc mare de memorie RAM sincronă prefabricat direct pe chip",
+      "Memorie realizată prin utilizarea celulelor SRAM din interiorul LUT-urilor",
+      "Memoria externă de tip SPI Flash care stochează fișierul bitstream",
+      "O structură specială de FIFO asincron pentru schimbarea domeniilor de ceas"
+    ],
+    ans: 1,
+    exp: "Distributed RAM folosește resursele de memorie ale LUT-urilor (disponibile doar în feliile de tip SLICEM). Permite citirea asincronă, spre deosebire de Block RAM (BRAM) care este strict sincron."
+  },
+  {
+    q: "Ce reprezintă 'retiming' în proiectarea FPGA?",
+    opts: [
+      "Ajustarea manuală a frecvenței ceasului global pentru depanare",
+      "Mutarea registrelor prin logica combinațională fără a schimba latența",
+      "Resincronizarea semnalelor la trecerea dintre două domenii asincrone",
+      "Replicarea automată a registrelor pentru a scădea fan-out-ul mare"
+    ],
+    ans: 1,
+    exp: "Retiming = procedeu automat sau manual prin care registrele sunt mutate înainte sau înapoi prin logica combinațională pentru a echilibra timpii de propagare, păstrând latența totală neschimbată."
+  },
+  {
+    q: "Puterea dinamică consumată de o poartă logică CMOS se calculează cu formula:",
+    opts: [
+      "P = α · f · C",
+      "P = α · f · C · Vdd",
+      "P = α · f · C · Vdd²",
+      "P = f · C · Vdd² / R"
+    ],
+    ans: 2,
+    exp: "P = α · f · C · Vdd². Factorul de activitate α reprezintă probabilitatea de comutație. Reducerea tensiunii de alimentare Vdd este cea mai eficientă metodă de reducere a consumului datorită dependenței pătratice."
+  },
+  {
+    q: "Care limbaj HDL corespunde standardului internațional IEEE-1076?",
+    opts: [
+      "Limbajul de modelare Verilog",
+      "Limbajul de descriere VHDL",
+      "Limbajul avansat SystemVerilog",
+      "Limbajul de nivel înalt SystemC"
+    ],
+    ans: 1,
+    exp: "VHDL corespunde standardului IEEE 1076 (apărut în 1987). Verilog este standardizat prin IEEE 1364. VHDL este utilizat pe scară largă în proiectele europene și guvernamentale."
+  },
+  {
+    q: "Ce conține un CLB (Configurable Logic Block) la arhitectura Xilinx Seria 7?",
+    opts: [
+      "Un singur LUT cu 4 intrări și elementul său secvențial asociat",
+      "Exact 2 Slice-uri (reunind în total 8 LUT-uri și 16 registre)",
+      "Un macrobloc dedicat de memorie Block RAM și circuite de control",
+      "O felie de calcul DSP cu multiplicator hardware și acumulator"
+    ],
+    ans: 1,
+    exp: "Un CLB în Xilinx Seria 7 conține 2 Slice-uri conectate la matricea de rutare. Fiecare Slice are 4 LUT-uri de 6 intrări și 8 registre, ducând la un total de 8 LUT-uri și 16 registre per CLB."
+  },
+  {
+    q: "Verificarea Formală (FV) față de simularea dinamică standard oferă:",
+    opts: [
+      "O acoperire mai mică a stărilor logice din interiorul circuitului",
+      "Explorarea matematică a tuturor stărilor posibile fără stimuli",
+      "O viteză de rulare mai mare pentru absolut orice design complex",
+      "Un comportament complet echivalent bazat tot pe diagrame de timp"
+    ],
+    ans: 1,
+    exp: "Verificarea Formală folosește demonstrații matematice stricte (SAT solvers) pentru a valida proprietăți (aserțiuni) pe întreg spațiul stărilor posibile, fără a necesita scrierea de stimuli în testbench."
+  },
+  {
+    q: "De ce un FPGA bazat pe SRAM trebuie reconfigurat automat la fiecare pornire?",
+    opts: [
+      "Deoarece utilizatorul trebuie să modifice manual conexiunile electrice",
+      "Deoarece memoria SRAM este volatilă și își pierde starea la oprire",
+      "Deoarece circuitul își schimbă arhitectura fizică în mod aleatoriu",
+      "Deoarece acumulatorul intern de pe placă se descarcă complet la oprire"
+    ],
+    ans: 1,
+    exp: "SRAM este volatilă; la întreruperea alimentării, biții de configurare se pierd. La pornire (Power-On), o logică internă dedicată citește automat fișierul bitstream dintr-o memorie nevolatilă externă (SPI Flash)."
+  },
+  {
+    q: "Care este deosebirea structurală principală între circuitele CPLD și FPGA?",
+    opts: [
+      "CPLD nu poate fi programat deloc, în timp ce FPGA este flexibil",
+      "CPLD folosește blocuri macro tip PAL, iar FPGA se bazează pe LUT-uri",
+      "FPGA nu conține pini de intrare/ieșire reconfigurabili ca un CPLD",
+      "CPLD este fabricat întotdeauna pe noduri tehnologice mult mai avansate"
+    ],
+    ans: 1,
+    exp: "CPLD-urile sunt de complexitate mai redusă, bazate pe structuri de tip PAL (matrice AND programabilă, OR fixă) legate printr-o matrice globală. FPGA-urile folosesc o matrice de CLB-uri bazate pe LUT și memorii embedded."
+  },
+  {
+    q: "Ce face o celulă de Boundary Scan JTAG atunci când se află în modul 'Capture'?",
+    opts: [
+      "Deplasează datele în mod serial către pinul de ieșire extern TDO",
+      "Salvează valoarea curentă a pinului fizic în bistabilul intern",
+      "Forțează o valoare preîncărcată din registrul de test către pin",
+      "Permite trecerea normală și directă a datelor din aplicație la pini"
+    ],
+    ans: 1,
+    exp: "În modul Capture, celula JTAG eșantionează și salvează starea curentă a pinului fizic în registrul intern la impulsul ceasului de test (ClockDR). Ulterior, datele sunt deplasate spre TDO în starea Shift."
+  },
+  {
+    q: "În fluxul standard de proiectare FPGA, care este rezultatul final al implementării?",
+    opts: [
+      "Un fișier de tip GDSII ce conține măștile geometrice pentru turnătorie",
+      "Un fișier binar compact numit bitstream folosit pentru programare",
+      "Un netlist abstract de nivel poartă salvat în formatul text EDIF",
+      "Un fișier de tip SDF utilizat exclusiv pentru simularea post-sinteză"
+    ],
+    ans: 1,
+    exp: "Fluxul FPGA se încheie cu generarea fișierului bitstream care configurează celulele SRAM interne. Generarea măștilor (GDSII) este specifică fluxului de fabricație ASIC."
+  },
+  {
+    q: "De ce porțile NAND și NOR sunt preferate în bibliotecile de celule standard?",
+    opts: [
+      "Deoarece au timpi de comutație mult mai mari pe fronturile căzătoare",
+      "Deoarece se implementează cu mai puțini tranzistori și sunt universale",
+      "Deoarece curenții lor de scurgere statică sunt zero în starea stabilă",
+      "Deoarece uneltele de verificare formală le analizează mult mai rapid"
+    ],
+    ans: 1,
+    exp: "NAND2 și NOR2 necesită doar 4 tranzistori (față de 6 tranzistori pentru AND2/OR2). În plus, ele formează seturi funcționale complete (orice funcție logică poate fi exprimată exclusiv prin NAND sau NOR)."
+  },
+  {
+    q: "Ce descrie limbajul PSL (Property Specification Language) în ingineria digitală?",
+    opts: [
+      "Geometria fizică a straturilor de metalizare de pe suprafața cipului",
+      "Proprietăți și aserțiuni formale utilizate pentru verificarea codului",
+      "Sintaxa standard a fișierelor de constrângeri temporale de tip SDC",
+      "Setul de comenzi folosite în scripturile de automatizare din Vivado"
+    ],
+    ans: 1,
+    exp: "PSL este un limbaj dedicat scrierii de aserțiuni și proprietăți logice utilizat în Verificarea Bazată pe Aserțiuni (ABV) și în Verificarea Formală, facilitând prinderea erorilor direct la sursă."
+  },
+
+  // --- ÎNTREBĂRI NOI DETALIATE DIN CURSURI (33% EXTENSIE) ---
+  {
+    q: "În ce an a fost inventat tranzistorul și cine sunt inventatorii de la Bell Labs?",
+    opts: [
+      "În 1959, de către Jack Kilby de la Texas Instruments",
+      "În 1947, de către John Bardeen și Walter Brattain",
+      "In 1963, de către Robert Norman de la Fairchild",
+      "În 1965, de către Benjamin Agusta de la compania IBM"
+    ],
+    ans: 1,
+    exp: "Tranzistorul a apărut în 1947 (Bardeen și Brattain, Bell Labs - Premiul Nobel în 1956). Jack Kilby a brevetat circuitul integrat în 1959. Robert Norman a inventat SRAM bipolar în 1963."
+  },
+  {
+    q: "Care este dezavantajul major al Structured ASIC comparativ cu Standard Cells?",
+    opts: [
+      "Necesită un timp de proiectare și dezvoltare mult mai lung",
+      "Consumă de 3 ori mai multă putere și are arie de siliciu dublă-triplă",
+      "Nu permite includerea de blocuri RAM dedicate sau generatoare de ceas",
+      "Configurarea sa hardware necesită modificarea tuturor măștilor foto"
+    ],
+    ans: 1,
+    exp: "Conform cursului, Structured ASIC reduce timpul și costul măștilor (se configurează doar 1-3 straturi superioare sau via), dar comparativ cu Standard Cells consumă de ~3x mai multă putere, are performanțe mai mici și arie de 2-3x mai mare."
+  },
+  {
+    q: "Care este diferența dintre feliile logice SLICEL și feliile SLICEM în FPGA Xilinx?",
+    opts: [
+      "SLICEL conține exclusiv circuite DSP, iar SLICEM conține doar registre",
+      "Numai feliile SLICEM permit configurarea LUT-urilor ca RAM distribuit",
+      "SLICEL este volatil, în timp ce SLICEM folosește tehnologie nevolatilă",
+      "SLICEM nu dispune de registre secvențiale sau circuite de carry"
+    ],
+    ans: 1,
+    exp: "Ambele feliile pot implementa logică combinațională și registre standard, însă numai cele de tip SLICEM (Memory) permit utilizarea LUT-urilor interne pe post de Distributed RAM sau Shift Registers."
+  },
+  {
+    q: "Cum funcționează transmisia diferențială în standardul de mare viteză LVDS?",
+    opts: [
+      "Variază nivelul de tensiune pe o singură linie între 0V și 3.3V",
+      "Injectează 3.5 mA pe două linii paralele, generând ±350 mV pe o rezistență de 100 Ω",
+      "Folosește pini VRN și VRP pentru calibrarea impedanței la pornire",
+      "Transmite datele exclusiv în mod sincron, folosind o linie de ceas dedicată"
+    ],
+    ans: 1,
+    exp: "Standardul LVDS folosește două linii simetrice; transmițătorul injectează un curent constant de 3.5 mA, iar receptorul plasează o rezistență de terminatie de 100 Ω, citind o cădere de tensiune de ±350 mV. Oferă imunitate la zgomot de mod comun."
+  },
+  {
+    q: "Ce este tehnologia DCI (Digitally Controlled Impedance) în blocurile I/O ale FPGA-ului?",
+    opts: [
+      "Un protocol serial utilizat pentru configurarea rapidă a bitstream-ului",
+      "O metodă digitală de adaptare automată a impedanței bufferelor interne",
+      "Un algoritm software folosit pentru eliminarea hazardului funcțional",
+      "Un bloc hardware care se ocupă exclusiv cu eliminarea jitter-ului de ceas"
+    ],
+    ans: 1,
+    exp: "Tehnologia DCI ajustează automat impedanța de intrare/ieșire a tranzistorilor din IOB (Drive Strength) pentru a se potrivi cu liniile de pe PCB, folosind rezistențe etalon externe conectate la pinii VRN și VRP."
+  },
+  {
+    q: "În configurarea de tip Daisy Chain (înlănțuire), cum se comportă circuitele FPGA?",
+    opts: [
+      "Toate circuitele din lanț funcționează în mod autonom ca Master Parallel",
+      "Primul circuit funcționează ca Master, iar restul funcționează ca Slave Serial",
+      "Toate circuitele descarcă simultan date prin portul JTAG de pe PC",
+      "Circuitele își împart în mod egal frecvența ceasului de configurare CCLK"
+    ],
+    ans: 1,
+    exp: "În Daisy Chain, primul FPGA este Master (generează ceasul CCLK și citește din memoria Flash externă), iar după ce își încarcă configurarea proprie, trimite restul biților prin portul său de ieșire către celelalte FPGA-uri, care acționează ca Slave Serial."
+  },
+  {
+    q: "Cum afectează temperatura și tensiunea de alimentare timpii de propagare CMOS?",
+    opts: [
+      "Temperatura scade liniar timpii, iar tensiunea îi crește exponențial",
+      "Temperatura crește liniar timpii, iar tensiunea îi scade logaritmic",
+      "Ambele măresc în mod strict liniar timpii de propagare ai porților",
+      "Factorii de mediu nu influențează timpii de propagare măsurați de STA"
+    ],
+    ans: 1,
+    exp: "Creșterea temperaturii mărește liniar timpii de propagare (scade mobilitatea purtătorilor, circuitul devine mai lent). Creșterea tensiunii scade logaritmic timpii (curenți mai mari, încărcare rapidă, circuit mai rapid)."
+  },
+  {
+    q: "Ce este hazardul funcțional și cum poate fi eliminat din circuitele combinaționale?",
+    opts: [
+      "Este hazardul static ce se elimină prin adăugarea de termeni redundanți",
+      "Este hazardul generat de schimbarea simultană a mai multor intrări și NU poate fi eliminat logic",
+      "Este hazardul dinamic eliminat prin inserarea registrelor de pipeline",
+      "Este un fenomen parazit ce se remediază prin utilizarea de porți NAND în loc de NOR"
+    ],
+    ans: 1,
+    exp: "Hazardul funcțional apare când două sau mai multe intrări ale unui bloc combinațional se modifică în același timp. Spre deosebire de hazardul static, acesta NU poate fi eliminat prin adăugarea de termeni logici redundanți."
+  },
+  {
+    q: "Care este regula critică în FPGA privind utilizarea tehnicii de Clock Gating?",
+    opts: [
+      "Este obligatoriu să se folosească porți AND simple realizate din LUT-uri",
+      "Este complet interzisă folosirea porților din LUT-uri; se folosesc exclusiv buffere dedicate (BUFGCE)",
+      "Ceasul mascat trebuie trecut printr-un sincronizator cu două bistabile D",
+      "Mascarea ceasului se aplică doar în circuitele asincrone fără reset comun"
+    ],
+    ans: 1,
+    exp: "Utilizarea porților logice combinaționale din LUT-uri (AND/OR) pentru a masca ceasul produce glitch-uri catastrofale pe linia de ceas din cauza întârzierilor. Se folosesc obligatoriu celule hardware dedicate din arborele de ceas, precum BUFGCE."
+  },
+  {
+    q: "În managementul semnalelor asincrone, ce rol are un sincronizator cu două bistabile D în serie?",
+    opts: [
+      "Elimină complet metastabilitatea din circuit în mod absolut matematic",
+      "Reduce probabilitatea propagării metastabilității, mărind parametrul MTBF",
+      "Mărește frecvența maximă de lucru Fmax prin adăugarea de pipeline",
+      "Deplasează datele pe magistrală folosind protocolul de control Handshake"
+    ],
+    ans: 1,
+    exp: "Metastabilitatea nu poate fi eliminată 100% din punct de vedere fizic. Sincronizatorul cu 2 bistabile în serie reduce exponențial probabilitatea ca o stare metastabilă să treacă de cel de-al doilea bistabil, crescând fiabilitatea (MTBF)."
+  },
+  {
+    q: "Cine are dreptul exclusiv de a închide un tichet de eroare în lifecycle-ul unui Bug?",
+    opts: [
+      "Proiectantul hardware (dezvoltatorul) care a modificat și reparat codul RTL",
+      "Inițiatorul (echipa de verificare) după ce retestează și confirmă rezolvarea",
+      "Managerul de proiect, în mod automat, la 24 de ore de la modificarea codului",
+      "Unealta software de simulare EDA în momentul în care testul trece cu succes"
+    ],
+    ans: 1,
+    exp: "Conform cursului 11, fluxul corect într-un sistem de Bug-Tracking este: Deschis → Asignat → Reparat → Verificat → Închis. Cel care a deschis tichetul (verificatorul) are dreptul exclusiv de a-l închide sau redeschide după retestare."
+  },
+  {
+    q: "Ce deosebire principală există între modelarea prin Inferențiere și cea prin Instanțiere în HDL?",
+    opts: [
+      "Inferențierea oferă control hardware absolut, dar codul își pierde portabilitatea",
+      "Inferențierea oferă cod generic portabil, în timp ce instanțierea invocă manual celule specifice",
+      "Instanțierea lasă unealta EDA să aleagă automat cea mai bună resursă din FPGA",
+      "Instanțierea generează în mod neintenționat circuite de tip Latch în logica proiectată"
+    ],
+    ans: 1,
+    exp: "Inferențierea folosește cod comportamental generic (ex: Y <= A + B), fiind portabilă. Instanțierea invocă manual o componentă din biblioteca producătorului (ex: RAMB16BWER), oferind control hardware maxim, dar pierzând portabilitatea."
+  },
+  {
+    q: "Unde stochează analizorul logic intern ChipScope Pro datele eșantionate în timp real?",
+    opts: [
+      "În registrele generice ale feliilor de tip SLICEL din interiorul CLB-urilor",
+      "Exclusiv în blocurile libere de memorie dedicată Block RAM (BRAM) ale FPGA-ului",
+      "În memoria cache a calculatorului de dezvoltare prin conexiunea directă USB",
+      "În celulele de memorie nevolatilă Distributed RAM ale blocului SLICEM"
+    ],
+    ans: 1,
+    exp: "Modulele ILA (Integrated Logic Analyzer) din ChipScope folosesc blocurile libere de Block RAM (BRAM) ale FPGA-ului testat pentru a stoca eșantioanele la viteza reală a hardware-ului, datele fiind trimise ulterior spre PC prin portul JTAG."
+  }
+];
+
+let score = { total: 0, correct: 0, wrong: 0 };
+let answered = {};
+let currentQuestions = [];
+
+function switchTab(t, btn) {
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(t).classList.add('active');
+}
+
+function buildChapters() {
+  const cont = document.getElementById('chapters');
+  chapters.forEach((ch, i) => {
+    const d = document.createElement('div');
+    d.className = 'chapter';
+    d.innerHTML = `
+      <div class="ch-head" onclick="toggleCh(${i})">
+        <div class="ch-head-left">
+          <div class="ch-num">${i + 1}</div>
+          <div class="ch-title">${ch.title}</div>
+        </div>
+        <div class="ch-arrow" id="arr-${i}">▼</div>
+      </div>
+      <div class="ch-body" id="ch-${i}">
+        <div class="tags">${ch.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+        ${ch.items.map(it => `<div class="item">${it}</div>`).join('')}
+      </div>`;
+    cont.appendChild(d);
+  });
+}
+
+function toggleCh(i) {
+  const ch = document.querySelectorAll('.chapter')[i];
+  const open = ch.classList.contains('open');
+  ch.classList.toggle('open', !open);
+}
+
+function shuffle(arr) { return arr.sort(() => Math.random() - 0.5); }
+
+function loadQuiz() {
+  answered = {};
+  currentQuestions = shuffle([...allQuestions]).slice(0, 10);
+  const cont = document.getElementById('quiz-container');
+  cont.innerHTML = '';
+  currentQuestions.forEach((q, qi) => {
+    const shuffledOpts = q.opts.map((o, i) => ({ t: o, orig: i }));
+    shuffle(shuffledOpts);
+    const correctNew = shuffledOpts.findIndex(o => o.orig === q.ans);
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.dataset.qi = qi;
+    card.dataset.correct = correctNew;
+    card.innerHTML = `
+      <div class="q-num">Întrebarea ${qi + 1} din ${currentQuestions.length}</div>
+      <div class="q-text">${q.q}</div>
+      ${shuffledOpts.map((o, oi) =>
+        `<button class="opt" onclick="answer(${qi}, ${oi}, ${correctNew}, this.closest('.q-card'))">${String.fromCharCode(65 + oi)}. ${o.t}</button>`
+      ).join('')}
+      <div class="exp" id="exp-${qi}">${q.exp}</div>`;
+    cont.appendChild(card);
+  });
+  updateStats();
+}
+
+function answer(qi, chosen, correct, card) {
+  if (answered[qi] !== undefined) return;
+  const isCorrect = chosen === correct;
+  answered[qi] = isCorrect;
+  if (isCorrect) { score.correct++; score.total++; }
+  else { score.wrong++; score.total++; }
+  card.querySelectorAll('.opt').forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === correct) btn.classList.add(isCorrect ? 'correct' : 'show-correct');
+    if (i === chosen && !isCorrect) btn.classList.add('wrong');
+  });
+  card.classList.add(isCorrect ? 'answered-correct' : 'answered-wrong');
+  document.getElementById('exp-' + qi).classList.add('show');
+  updateStats();
+}
+
+function updateStats() {
+  document.getElementById('s-total').textContent = score.total;
+  document.getElementById('s-correct').textContent = score.correct;
+  document.getElementById('s-wrong').textContent = score.wrong;
+  const pct = score.total ? Math.round(score.correct / score.total * 100) + '%' : '—';
+  document.getElementById('s-pct').textContent = pct;
+  const prog = score.total ? Math.round(score.correct / score.total * 100) : 0;
+  document.getElementById('prog').style.width = prog + '%';
+}
+
+buildChapters();
+loadQuiz();
+</script>
+</body>
+</html>
